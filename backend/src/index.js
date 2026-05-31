@@ -11,7 +11,6 @@ import { connectDB } from "./lib/db.js";
 
 const app = express();
 
-/* ✅ 1. CORS FIRST */
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -19,14 +18,11 @@ app.use(
   }),
 );
 
-/* ✅ 2. BODY PARSERS */
-app.use(express.json({ limit: "10mb" })); // مهم لحل 413
+app.use(express.json({ limit: "10mb" })); 
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-/* ✅ 3. COOKIE PARSER */
 app.use(cookieParser());
 
-/* ✅ 4. ROUTES */
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 
