@@ -1,0 +1,74 @@
+import { create } from "zustand";
+import { axiosInstanace } from "../lib/axios";
+import toast from "react-hot-toast";
+
+export const useAuthStore = create((set) => ({
+  authUser: null,
+  ischeckAuth: false,
+  isSigningUp: false,
+  isloggingUp: false,
+  isUpdatingprofile: false,
+
+  checkAuth: async () => {
+    try {
+      const res = await axiosInstanace.get("/auth/check");
+
+      set({ authUser: res.data });
+    } catch (err) {
+      console.log("the err : " + err);
+
+      set({ authUser: null });
+    } finally {
+      set({ ischeckAuth: true });
+    }
+  },
+
+  signUp: async (data) => {
+    try {
+      const res = await axiosInstanace.post("/auth/sign_up", data);
+
+      set({ authUser: res.data });
+      toast.success("Successfully signup!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isSigningUp: false });
+    }
+  },
+
+  logOut: async () => {
+    try {
+      await axiosInstanace.post("/auth/logout");
+      set({ authUser: null });
+      toast.success("Successfully logOut!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  login: async (data) => {
+    try {
+      const res = await axiosInstanace.post("/auth/login", data);
+      set({ authUser: res.data });
+
+      toast.success("Successfully login!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isloggingUp: false });
+    }
+  },
+
+  profileImg: async (file) => {
+    try {
+      set({isUpdatingprofile: true})
+      const res =  await axiosInstanace.put("/auth/update-profile", file);
+      set({authUser:res.data})
+      toast.success("Successfully upload image!");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isUpdatingprofile: false });
+    }
+  },
+}));
