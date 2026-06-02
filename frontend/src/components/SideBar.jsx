@@ -1,15 +1,18 @@
 import { Users } from "lucide-react";
 import styled from "styled-components";
-import {  useChatStore } from "../store/useChatStore";
-import { useEffect } from "react";
+import { useChatStore } from "../store/useChatStore";
+import {  useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function SideBar() {
-  const { getUsers, users, isUsersLoading,setSelected,selectedUser } = useChatStore();
+  const { getUsers, users, isUsersLoading, setSelected, selectedUser } =
+    useChatStore();
+  const [act, setact] = useState(false);
+  const { onlineUser } = useAuthStore();
 
   useEffect(() => {
     getUsers();
-
   }, [getUsers]);
 
   return (
@@ -23,13 +26,23 @@ export default function SideBar() {
           <p className="text-2xl font-semibold ml-1.5">Contacts</p>
         </div>
         <label className="ml-2 font-semibold">
-          <input type="checkbox" className="mr-1 size-3" />
-          show online only <span>(0 online)</span>
+          <input
+            type="checkbox"
+            className="mr-1 size-3"
+            onChange={(e) => setact(e.target.checked)}
+          />
+          show online only <span>({onlineUser.length} online)</span>
         </label>
       </header>
       <div className="h-full overflow-y-auto">
         {!isUsersLoading ? (
-          <Card users={users} setSelected={setSelected} selectedUser={selectedUser}/>
+          <Card
+            users={users}
+            setSelected={setSelected}
+            selectedUser={selectedUser}
+            onlineUser={onlineUser}
+            act={act}
+          />
         ) : (
           <div className="flex justify-center mt-50">
             <Loader />
@@ -50,18 +63,43 @@ const Loader = () => {
   );
 };
 
-const Card = ({ users,setSelected,selectedUser }) => {
+const Card = ({ users, setSelected, selectedUser, onlineUser, act }) => {
+  const filteredUsers = act
+    ? users.filter((user) => onlineUser.includes(user._id))
+    : users;
+
   return (
     <StyledWrapper>
       <div className="card">
         <div className="user__container">
-          {users.map((user) => (
-            <div className={`user ${selectedUser === user._id ? 'selected' : ''}`}>
-              <img className="image" src={user.profilepic || 'https://static.vecteezy.com/system/resources/previews/020/987/083/non_2x/user-icon-fake-photo-sign-profile-button-simple-style-social-media-poster-background-symbol-user-brand-logo-design-element-user-t-shirt-printing-for-sticker-free-vector.jpg'} />
-              <button className="user__content" onClick={()=>setSelected(user._id)}>
+          {filteredUsers.map((user) => (
+            <div
+              key={user._id}
+              className={`user ${
+                selectedUser === user._id ? "selected" : ""
+              }`}
+            >
+              <img
+                className="image"
+                src={
+                  user.profilepic ||
+                  "https://static.vecteezy.com/system/resources/previews/020/987/083/non_2x/user-icon-fake-photo-sign-profile-button-simple-style-social-media-poster-background-symbol-user-brand-logo-design-element-user-t-shirt-printing-for-sticker-free-vector.jpg"
+                }
+                alt={user.fullname}
+              />
+
+              <button
+                className="user__content"
+                onClick={() => setSelected(user._id)}
+              >
                 <div className="text">
                   <span className="name">{user.fullname}</span>
-                  <p className="kk">offline</p>
+
+                  {onlineUser.includes(user._id) ? (
+                    <p className="kk">online</p>
+                  ) : (
+                    <p className="kk">offline</p>
+                  )}
                 </div>
               </button>
             </div>
@@ -71,7 +109,6 @@ const Card = ({ users,setSelected,selectedUser }) => {
     </StyledWrapper>
   );
 };
-
 const StyledWrapper = styled.div`
   .card {
     display: flex;
@@ -123,10 +160,7 @@ const StyledWrapper = styled.div`
     margin-right: 15px;
   }
 
-  
-
-  .selected{
-        background-color: #b3b6b8;
-
+  .selected {
+    background-color: #b3b6b8;
   }
 `;

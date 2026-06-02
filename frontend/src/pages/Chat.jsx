@@ -10,7 +10,7 @@ export default function Chat() {
   const [text, settext] = useState("");
   const fileref = useRef(null);
 
-  const { users, selectedUser, sendMessages,messages ,getMessages} = useChatStore();
+  const { users, selectedUser, sendMessages,messages ,getMessages,subs,unsub} = useChatStore();
 
   const {authUser} = useAuthStore();
   
@@ -56,6 +56,9 @@ export default function Chat() {
   
   useEffect(() => {
     getMessages()
+    subs()
+
+    return ()=>unsub()
   }, [selectedUser,messages.length]);
 
   return (

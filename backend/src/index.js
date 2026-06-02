@@ -8,8 +8,9 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { connectDB } from "./lib/db.js";
+import {app,server} from "./lib/socket.js";
+import path from"path"
 
-const app = express();
 
 app.use(
   cors({
@@ -27,8 +28,25 @@ app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve()
 
-app.listen(PORT, () => {
+if(process.env.NODE_ENV==="production"){
+  app.use(express.static(path.join(__dirname,"../frontend/dist")));
+
+
+
+
+  app.get("*",(re ,res)=>{
+    res.sendFile(path.join(__dirname,"../frontend","dist","index.html"))
+  }
+}
+
+
+
+
+
+
+server.listen(PORT, () => {
   console.log("server is running on port", PORT);
   connectDB();
 });
