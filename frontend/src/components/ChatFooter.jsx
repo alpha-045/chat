@@ -1,21 +1,33 @@
 import styled from "styled-components";
-import {BadgeX} from 'lucide-react'
+import { BadgeX, Video } from "lucide-react";
 export default function ChatFooter({
   handletext,
   imageprev,
   text,
   sub,
   handleImgprev,
-  fileref,removeImg
+  fileref,
+  removeImg,
+  openvid
 }) {
   return (
     <div className="flex items-center justify-center">
       <div className="relative w-full ">
         <div className="relative ">
-          {imageprev ? <div className="container-img w-40 relative top-3 z-25">
-            <img src={imageprev} alt="" className="m-1 rounded-tr-3xl"/>
-            <button className="absolute right-0 top-0 text-white cursor-pointer" onClick={removeImg}>  <BadgeX /></button>
-          </div> : ""}
+          {imageprev ? (
+            <div className="container-img w-40 relative top-3 z-25">
+              <img src={imageprev} alt="" className="m-1 rounded-tr-3xl" />
+              <button
+                className="absolute right-0 top-0 text-white cursor-pointer"
+                onClick={removeImg}
+              >
+                {" "}
+                <BadgeX />
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
 
           <form action method encType="multipart/form-data" onSubmit={sub}>
             <div className="relative   border-t-2 border-amber-50">
@@ -59,6 +71,17 @@ export default function ChatFooter({
                           ref={fileref}
                           onChange={handleImgprev}
                         />
+                      </label>
+                    </button>
+                  </div>
+                  <div className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={openvid}
+                      className="inline-flex flex-shrink-0 justify-center items-center size-10 rounded-lg text-gray-500"
+                    >
+                      <label className="cursor-pointer">
+                        <Video size={30} />
                       </label>
                     </button>
                   </div>

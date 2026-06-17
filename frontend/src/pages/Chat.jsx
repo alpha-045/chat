@@ -1,22 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import ChatFooter from "../components/ChatFooter";
 import ChatHeader from "../components/ChatHeader";
-import {  useChatStore } from "../store/useChatStore";
+import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 
 export default function Chat() {
   const [userinfo, setuserinfo] = useState({});
   const [imageprev, setimageprev] = useState(null);
+  const [ved, setved] = useState(false);
   const [text, settext] = useState("");
   const fileref = useRef(null);
 
-  const { users, selectedUser, sendMessages,messages ,getMessages,subs,unsub} = useChatStore();
+  const {
+    users,
+    selectedUser,
+    sendMessages,
+    messages,
+    getMessages,
+    subs,
+    unsub,
+  } = useChatStore();
 
-  const {authUser} = useAuthStore();
-  
-
-
-
+  const { authUser } = useAuthStore();
 
   const handletext = (value) => {
     settext(value);
@@ -53,39 +58,50 @@ export default function Chat() {
   useEffect(() => {
     users.map((user) => user._id === selectedUser && setuserinfo(user));
   }, [selectedUser]);
-  
-  useEffect(() => {
-    getMessages()
-    subs()
 
-    return ()=>unsub()
-  }, [selectedUser,messages.length]);
+  useEffect(() => {
+    getMessages();
+    subs();
+
+    return () => unsub();
+  }, [selectedUser, messages.length]);
+
+  const openvid = () => {
+    setved(true);
+  };
 
   return (
     <div className="flex flex-col  h-full w-full justify-between">
       <ChatHeader userinfo={userinfo} />
-      <div className=" w-full h-full overflow-y-auto ">
+      <div className=" w-full h-full overflow-y-auto">
         <div className="flex flex-col h-115">
           <div
             className="flex-1 p-3 overflow-y-auto flex flex-col space-y-3"
             id="chatDisplay"
           >
-            {
-                messages.map((mssg,index)=> 
-                 <div className={mssg.senderId !==authUser._id ? 'chat-message self-end  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm' : "chat-message self-start  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"}><img src={mssg.image} />{mssg.text} </div>
-            )
-            }
+            {messages.map((mssg, index) => (
+              <div
+                className={
+                  mssg.senderId !== authUser._id
+                    ? "chat-message self-end  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
+                    : "chat-message self-start  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
+                }
+              >
+                <img src={mssg.image} />
+                {mssg.text}{" "}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-      <ChatFooter
-        handletext={handletext}
+      <ChatFooter handletext={handletext}
         fileref={fileref}
         handleImgprev={handleImgprev}
         text={text}
         sub={sub}
-        imageprev={imageprev}
+        imageprev={imageprev} 
         removeImg={removeImg}
+        openvid={openvid}
       />
     </div>
   );

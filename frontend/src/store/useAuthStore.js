@@ -31,7 +31,6 @@ export const useAuthStore = create((set, get) => ({
   signUp: async (data) => {
     try {
       const res = await axiosInstanace.post("/auth/sign_up", data);
-
       set({ authUser: res.data });
       toast.success("Successfully signup!");
       get().connectSocket();

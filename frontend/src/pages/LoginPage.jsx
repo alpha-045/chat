@@ -12,9 +12,9 @@ const LoginPage = () => {
   const [showpass, setshowpass] = useState(false);
   const [succes, setsuccess] = useState({});
 
-  const {login} = useAuthStore();
-  
- const validatefields = () => {
+  const { login } = useAuthStore();
+
+  const validatefields = () => {
     if (!info.email.trim()) return toast.error("email darori...");
     if (!info.password.trim()) return toast.error("pass darori...");
     if (info.password.length < 6) return toast.error("pass tfout 6...");
@@ -24,89 +24,123 @@ const LoginPage = () => {
 
   const sub = async (e) => {
     e.preventDefault();
-    try{
-        if (validatefields() == true) {
+    try {
+      if (validatefields() == true) {
         login(info);
-        }
-    }catch(err){
-      console.log(err)
+      }
+    } catch (err) {
+      console.log(err);
     }
-  
   };
 
   return (
-    <form onSubmit={sub}>
-
-        '
-      <div>
-        <Toaster />
-      </div>
-      '
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <p className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-              account
-            </p>
-
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                email
-              </label>
+    <div className=" flex justify-center  mt-20">
+      <div className="relative flex w-120 h-120 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+        <div>
+          <Toaster />
+        </div>
+        <div className="relative mx-4 -mt-6 mb-4 grid h-31 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-400 bg-clip-border text-white shadow-lg shadow-cyan-500/40">
+          <h3 className="block font-sans text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
+            Sign In
+          </h3>
+        </div>
+        <form onSubmit={sub}>
+          <div className="flex flex-col gap-4 p-6">
+            <div className="relative h-11 w-full min-w-[200px]">
               <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                placeholder="@gmail.com"
-                name="email"
-                type="email"
                 onChange={(e) => setinfo({ ...info, email: e.target.value })}
                 value={info.email}
+                name="email"
+                placeholder
+                className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-cyan-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
               />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                password
+              <label className="before:content[' '] after:content[' pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-cyan-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-cyan-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-cyan-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                Email
               </label>
+            </div>
+            <div className="relative h-11 w-full min-w-[200px]">
               <input
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-                placeholder="••••••••"
+                placeholder
                 id="password"
-                  type={showpass ? "text" : "password"}
+                type={showpass ? "text" : "password"}
+                name="password"
                 onChange={(e) => setinfo({ ...info, password: e.target.value })}
                 value={info.password}
+                className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-cyan-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
               />
-
+              <label className="before:content[' '] after:content[' pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-cyan-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-cyan-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-cyan-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                Password
+              </label>
               <div className="flex justify-end p-2">
                 <button
                   onClick={() => setshowpass(!showpass)}
                   className="relative bottom-10"
+                  type="button"
                 >
                   {" "}
                   {showpass ? <Eye /> : <EyeOff />}
                 </button>
               </div>
             </div>
-
-            <button
-              className="w-full bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center focus:ring-blue-800 text-white"
-              type="submit"
-            >
-              sign in{" "}
-            </button>
-            <div class="flex flex-col mt-4 text-sm text-center dark:text-gray-300">
-              <p>
-                dont have account{" "}
-                <a
-                  href="/signup"
-                  class="text-blue-400 transition hover:underline"
+            <div className="-ml-2.5">
+              <div className="inline-flex items-center">
+                <label
+                  data-ripple-dark="true"
+                  htmlFor="checkbox"
+                  className="relative flex cursor-pointer items-center rounded-full p-3"
                 >
-                  Sign up
-                </a>
-              </p>
+                  <input
+                    id="checkbox"
+                    className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-cyan-500 checked:bg-cyan-500 checked:before:bg-cyan-500 hover:before:opacity-10"
+                    type="checkbox"
+                  />
+                  <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
+                    <svg
+                      strokeWidth={1}
+                      stroke="currentColor"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      className="h-3.5 w-3.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clipRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        fillRule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                </label>
+                <label
+                  htmlFor="checkbox"
+                  className="mt-px cursor-pointer select-none font-light text-gray-700"
+                >
+                  Remember Me
+                </label>
+              </div>
             </div>
           </div>
-        </div>
+          <div className="p-6 pt-0">
+            <button
+              data-ripple-light="true"
+              type="submit"
+              className="block w-full select-none rounded-lg bg-gradient-to-tr from-cyan-600 to-cyan-400 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-cyan-500/20 transition-all hover:shadow-lg hover:shadow-cyan-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            >
+              Sign In
+            </button>
+            <p className="mt-6 flex justify-center font-sans text-sm font-light leading-normal text-inherit antialiased">
+              Don't have an account?
+              <a
+                className="ml-1 block font-sans text-sm font-bold leading-normal text-cyan-500 antialiased"
+                href="/signup"
+              >
+                Sign up
+              </a>
+            </p>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 };
 

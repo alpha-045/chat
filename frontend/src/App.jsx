@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import { Loader } from "lucide-react";
 import Navbar from "./components/Navbar";
+import Setting from "./pages/Setting";
 function App() {
   const [count, setCount] = useState(0);
 
@@ -36,6 +37,11 @@ function App() {
             element={authUser ? <Homepage /> : <Navigate to="/login" />}
           />
 
+             <Route
+            path="/setting"
+            element={<Setting />}
+          />
+
           <Route
             path="/signup"
             element={authUser ? <Homepage /> : <SignUpPage />}
@@ -45,8 +51,6 @@ function App() {
             path="/login"
             element={authUser ? <Homepage /> : <LoginPage />}
           />
-
-      
 
           <Route
             path="/profile"
