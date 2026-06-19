@@ -25,7 +25,7 @@ export default function ChatFooter({
                 <BadgeX />
               </button>
             </div>
-          ) : (
+          ) : (  
             ""
           )}
 

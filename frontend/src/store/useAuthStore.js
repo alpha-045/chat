@@ -3,7 +3,7 @@ import { axiosInstanace } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const url =import.meta.env.MODE === 'development' ? 'http://localhost:5001/api' : '/'
+const BASE_URL = import.meta.env.MODE === 'development' ? 'http://localhost:5001' : '/'
 export const useAuthStore = create((set, get) => ({
   authUser: null,
   ischeckAuth: false,
@@ -12,6 +12,9 @@ export const useAuthStore = create((set, get) => ({
   isUpdatingprofile: false,
   socket: null,
   onlineUser: [],
+  token:"",
+  callId:"",
+  apikey:"",
 
   checkAuth: async () => {
     try {
@@ -79,18 +82,40 @@ export const useAuthStore = create((set, get) => ({
     }
   },
   connectSocket: () => {
-    const socket = io(url, {
+    const { authUser, socket } = get();
+
+    
+    if (!authUser || socket?.connected) return;
+
+    const newSocket = io(BASE_URL, {
       query: {
-        userId: get().authUser._id,
+        userId: authUser._id,
       },
     });
-    socket.connect();
-    set({ socket: socket });
-    socket.on("onlineUsers",(ids)=>{
-     set({onlineUser : ids}) 
-    })
+
+    set({ socket: newSocket });
+
+    newSocket.on("onlineUsers", (ids) => {
+      set({ onlineUser: ids });
+    });
   },
   disconnectSocket: () => {
     if (get().socket?.connected) return get().socket.disconnect();
   },
+  callf: async() => {
+
+    try{
+    const token_room = await axiosInstanace.get("/auth/call");
+
+    const {token,callId,apikey} =token_room.data
+      
+    set({token:token,callId:callId,apikey:apikey})
+      
+    }catch(err){
+        console.log(err)
+    }
+
+
+
+  }
 }));

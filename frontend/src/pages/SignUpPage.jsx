@@ -39,8 +39,8 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className=" flex justify-center  mt-20">
-      <div className="relative flex w-120 h-120 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+    <div className=" flex justify-center  ">
+      <div className="relative flex w-120 h-120 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md mt-30">
         <div>
           <Toaster />
         </div>

@@ -11,6 +11,7 @@
   "description": "",
   "type": "module",
   "dependencies": {
+    "@stream-io/node-sdk": "^0.7.59",
     "bcryptjs": "^3.0.3",
     "chat": "file:..",
     "cloudinary": "^2.8.0",

@@ -1,6 +1,11 @@
 import styled from "styled-components";
+import { useAuthStore } from "../store/useAuthStore";
 
 export default function ChatHeader({ userinfo }) {
+
+
+  const {onlineUser} = useAuthStore()
+
   return (
     <StyledWrapper>
       <div className="user border-b-1 border-amber-50" >
@@ -14,7 +19,11 @@ export default function ChatHeader({ userinfo }) {
         <button className="user__content">
           <div className="text">
             <span className="name">{userinfo.fullname}</span>
-            <p className="kk">offline</p>
+                {onlineUser.includes(userinfo._id) ? (
+                    <p className="kk [@media(max-width:816px)]:hidden">online</p>
+                  ) : (
+                    <p className="kk [@media(max-width:816px)]:hidden">offline</p>
+                  )}
           </div>
         </button>
       </div>

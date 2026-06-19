@@ -3,13 +3,20 @@ import ChatFooter from "../components/ChatFooter";
 import ChatHeader from "../components/ChatHeader";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
+import {Peer} from 'peerjs'
+import { X } from "lucide-react";
+import CallV from "./callV";
 
 export default function Chat() {
   const [userinfo, setuserinfo] = useState({});
   const [imageprev, setimageprev] = useState(null);
   const [ved, setved] = useState(false);
   const [text, settext] = useState("");
+
   const fileref = useRef(null);
+  const camera = useRef(null);
+  const secondcamera = useRef(null);
+  
 
   const {
     users,
@@ -66,40 +73,46 @@ export default function Chat() {
     return () => unsub();
   }, [selectedUser, messages.length]);
 
-  const openvid = () => {
+   const openvid = async () => {
     setved(true);
   };
 
+ 
   return (
     <div className="flex flex-col  h-full w-full justify-between">
       <ChatHeader userinfo={userinfo} />
-      <div className=" w-full h-full overflow-y-auto">
-        <div className="flex flex-col h-115">
-          <div
-            className="flex-1 p-3 overflow-y-auto flex flex-col space-y-3"
-            id="chatDisplay"
-          >
-            {messages.map((mssg, index) => (
-              <div
-                className={
-                  mssg.senderId !== authUser._id
-                    ? "chat-message self-end  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
-                    : "chat-message self-start  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
-                }
-              >
-                <img src={mssg.image} />
-                {mssg.text}{" "}
-              </div>
-            ))}
+
+      {!ved ? (
+        <div className=" w-full h-full overflow-y-auto">
+          <div className="flex flex-col h-115">
+            <div
+              className="flex-1 p-3 overflow-y-auto flex flex-col space-y-3"
+              id="chatDisplay"
+            >
+              {messages.map((mssg, index) => (
+                <div
+                  className={
+                    mssg.senderId !== authUser._id
+                      ? "chat-message self-end  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
+                      : "chat-message self-start  text-white max-w-xs rounded-lg px-1 py-1.5 text-sm"
+                  }
+                >
+                  <img src={mssg.image} />
+                  {mssg.text}{" "}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      <ChatFooter handletext={handletext}
+      ) : (<CallV setved={setved} camera={camera} secondcamera={secondcamera}/>)}
+
+      <ChatFooter
+        handletext={handletext}
         fileref={fileref}
         handleImgprev={handleImgprev}
         text={text}
         sub={sub}
-        imageprev={imageprev} 
+        imageprev={imageprev}
         removeImg={removeImg}
         openvid={openvid}
       />
